@@ -17,6 +17,9 @@ const Navbar = ({ title, icon }) => {
             <li>
               <Link to='/about'>About</Link>
             </li>
+            <li>
+              <Link to='/newproduct'>New Product</Link>
+            </li>
           </ul>
         </div>
       </nav>
@@ -24,6 +27,9 @@ const Navbar = ({ title, icon }) => {
       <ul class='sidenav' id='mobile-demo'>
         <li>
           <Link to='/about'>About</Link>
+        </li>
+        <li>
+          <Link to='/newproduct'>New Product</Link>
         </li>
       </ul>
     </Fragment>

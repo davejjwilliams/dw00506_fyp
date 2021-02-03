@@ -1,6 +1,14 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import Products from '../products/Products';
 
 const Home = () => {
-  return <div>Welcome to the tracking app.</div>;
+  return (
+    <Fragment>
+      <h1>Welcome to the tracking app.</h1>
+      <div>
+        <Products />
+      </div>
+    </Fragment>
+  );
 };
 export default Home;
