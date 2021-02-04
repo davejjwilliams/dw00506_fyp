@@ -6,30 +6,42 @@ const Navbar = ({ title, icon }) => {
   return (
     <Fragment>
       <nav>
-        <div class='nav-wrapper'>
-          <Link to='/' class='brand-logo center'>
+        <div className='nav-wrapper'>
+          <Link to='/' className='brand-logo center'>
             {title}
           </Link>
-          <a href='#' data-target='mobile-demo' class='sidenav-trigger'>
-            <i class='material-icons'>menu</i>
+          <a href='#' data-target='mobile-demo' className='sidenav-trigger'>
+            <i className='material-icons'>menu</i>
           </a>
-          <ul class='right hide-on-med-and-down'>
+          <ul className='right hide-on-med-and-down'>
             <li>
               <Link to='/about'>About</Link>
             </li>
             <li>
               <Link to='/newproduct'>New Product</Link>
             </li>
+            <li>
+              <Link to='/register'>Register</Link>
+            </li>
+            <li>
+              <Link to='/login'>Login</Link>
+            </li>
           </ul>
         </div>
       </nav>
 
-      <ul class='sidenav' id='mobile-demo'>
+      <ul className='sidenav' id='mobile-demo'>
         <li>
           <Link to='/about'>About</Link>
         </li>
         <li>
           <Link to='/newproduct'>New Product</Link>
+        </li>
+        <li>
+          <Link to='/register'>Register</Link>
+        </li>
+        <li>
+          <Link to='/login'>Login</Link>
         </li>
       </ul>
     </Fragment>

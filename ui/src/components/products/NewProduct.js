@@ -29,20 +29,23 @@ const NewProduct = props => {
     <div>
       <h1>Add New Product</h1>
       <form onSubmit={onSubmit}>
-        <input
-          type='text'
-          placeholder='Name'
-          name='name'
-          value={name}
-          onChange={onChange}
-        />
-        <input
-          type='text'
-          placeholder='Description'
-          name='description'
-          value={description}
-          onChange={onChange}
-        />
+        <div className='input-field'>
+          <label className='active' htmlFor='name'>
+            Name
+          </label>
+          <input type='text' name='name' value={name} onChange={onChange} />
+        </div>
+        <div className='input-field'>
+          <label className='active' htmlFor='description'>
+            Description
+          </label>
+          <input
+            type='text'
+            name='description'
+            value={description}
+            onChange={onChange}
+          />
+        </div>
         <input type='submit' value='Submit Product' className='btn' />
       </form>
     </div>
