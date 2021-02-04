@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import AuthContext from '../../context/auth/authContext';
 
 import M from 'materialize-css/dist/js/materialize.min.js';
 
-const Register = () => {
-  // const alertContext = useContext(AlertContext);
+const Register = props => {
+  const authContext = useContext(AuthContext);
 
-  // const { setAlert } = alertContext;
+  const { isAuthenticated, error, register, clearErrors } = authContext;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push('/');
+    }
+
+    if (error === 'User already exists') {
+      M.toast({ html: 'User with this email already exists.' });
+      clearErrors();
+    }
+  }, [error, isAuthenticated, props.history]);
+
   const [user, setUser] = useState({
     name: '',
     email: '',
@@ -23,10 +36,15 @@ const Register = () => {
     e.preventDefault();
     if (name === '' || email === '' || password === '') {
       M.toast({ html: 'Please enter all fields' });
+    } else if (!password.match('(?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,}')) {
+      M.toast({
+        html:
+          'Password must be at least 8 characters, containing one uppercase, one lowercase and one number.'
+      });
     } else if (password !== password2) {
       M.toast({ html: 'Passwords do not match' });
     } else {
-      console.log('Register Success');
+      register({ name, email, password });
     }
   };
 
@@ -48,7 +66,8 @@ const Register = () => {
         </div>
         <div className='input-field'>
           <label className='active' htmlFor='password'>
-            Password
+            Password (at least 8 characters, must contain one uppercase, one
+            lower case and one number)
           </label>
           <input
             type='password'

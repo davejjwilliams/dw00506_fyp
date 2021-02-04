@@ -1,10 +1,19 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useContext } from 'react';
 import Products from '../products/Products';
+import AuthContext from '../../context/auth/authContext';
 
 const Home = () => {
+  const authContext = useContext(AuthContext);
+
+  const { loading, user, loadUser } = authContext;
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
   return (
     <Fragment>
-      <h1>Welcome to the tracking app.</h1>
+      <h1>Welcome to the tracking app{user ? `, ${user.name}.` : '.'}</h1>
       <div>
         <Products />
       </div>

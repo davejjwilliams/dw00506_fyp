@@ -1,6 +1,6 @@
 import { ADD_PRODUCT } from '../types';
 
-export default (state, action) => {
+const productReducer = (state, action) => {
   switch (action.type) {
     case ADD_PRODUCT:
       return {
@@ -11,3 +11,5 @@ export default (state, action) => {
       return state;
   }
 };
+
+export default productReducer;

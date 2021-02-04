@@ -12,6 +12,11 @@ import Login from './components/auth/Login';
 
 import ProductState from './context/product/ProductState';
 import AuthState from './context/auth/AuthState';
+import setAuthToken from './utils/setAuthToken';
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => {
   useEffect(() => {
