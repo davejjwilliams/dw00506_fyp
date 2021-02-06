@@ -9,16 +9,62 @@ const Product = require('../models/Product');
 // @route   GET api/products
 // @desc    Get user's products
 // @access  Private
-router.get('/', (req, res) => {
-  res.send('Get all products');
+router.get('/', auth, async (req, res) => {
+  try {
+    let products = [];
+
+    if (req.user.role === 'customer') {
+      console.log('Get Products Route - Customer Branch');
+      products = await User.populate('products');
+    } else if (req.user.role === 'seller') {
+      console.log('Get Products Route - Customer Branch');
+      products = await Product.find({ seller: req.user.id });
+    }
+
+    res.json(products);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 // @route   POST api/products
 // @desc    Add new product
 // @access  Private
-router.post('/', (req, res) => {
-  res.send('Add product');
-});
+router.post(
+  '/',
+  [
+    auth,
+    check('name', 'Name is required.').not().isEmpty(),
+    check('description', 'Description is required.').not().isEmpty()
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { name, description } = req.body;
+
+    try {
+      const code = Math.random().toString(36).substring(6);
+
+      const newProduct = new Product({
+        name,
+        description,
+        code,
+        seller: req.user.id
+      });
+
+      const product = await newProduct.save();
+
+      res.json(product);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 // @route   PUT api/products
 // @desc    Update product

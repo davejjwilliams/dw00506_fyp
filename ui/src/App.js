@@ -9,6 +9,7 @@ import About from './components/pages/About';
 import NewProduct from './components/products/NewProduct';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import PrivateRoute from './components/routing/PrivateRoute';
 
 import ProductState from './context/product/ProductState';
 import AuthState from './context/auth/AuthState';
@@ -31,8 +32,8 @@ const App = () => {
             <Navbar />
             <div className='container'>
               <Switch>
-                <Route exact path='/' component={Home} />
-                <Route exact path='/newproduct' component={NewProduct} />
+                <PrivateRoute exact path='/' component={Home} />
+                <PrivateRoute exact path='/newproduct' component={NewProduct} />
                 <Route exact path='/about' component={About} />
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/login' component={Login} />

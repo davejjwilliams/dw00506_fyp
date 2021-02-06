@@ -1,49 +1,55 @@
 import React, { useReducer } from 'react';
-import { v4 as uuid } from 'uuid';
 import ProductContext from './productContext';
 import productReducer from './productReducer';
-import { ADD_PRODUCT } from '../types';
+import {
+  GET_PRODUCTS,
+  ADD_PRODUCT,
+  CLEAR_PRODUCTS,
+  PRODUCT_ERROR
+} from '../types';
+import axios from 'axios';
 
 const ProductState = props => {
   const initialState = {
-    products: [
-      {
-        id: 1,
-        name: 'keyboard',
-        description: 'This is a test keyboard',
-        code: 'AAAAAA',
-        seller_key: 'ABCDEF'
-      },
-      {
-        id: 2,
-        name: 'product',
-        description: 'This is a test product',
-        code: 'BBBBBB',
-        seller_key: 'ABCDEF'
-      },
-      {
-        id: 3,
-        name: 'shirt',
-        description: 'This is a test shirt',
-        code: 'CCCCCC',
-        seller_key: 'ABCDEF'
-      }
-    ]
+    products: [],
+    error: null
   };
 
   const [state, dispatch] = useReducer(productReducer, initialState);
 
+  // Get Products
+  const getProducts = async () => {
+    try {
+      const res = await axios.get('/api/products');
+      dispatch({ type: GET_PRODUCTS, payload: res.data });
+    } catch (err) {
+      dispatch({ type: PRODUCT_ERROR, payload: err.response.msg });
+    }
+  };
+
   // Add Product
-  const addProduct = product => {
-    product.id = uuid();
-    dispatch({ type: ADD_PRODUCT, payload: product });
+  const addProduct = async product => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    try {
+      const res = await axios.post('/api/products', product, config);
+      dispatch({ type: ADD_PRODUCT, payload: res.data });
+    } catch (err) {
+      dispatch({ type: PRODUCT_ERROR, payload: err.response.msg });
+    }
   };
 
   return (
     <ProductContext.Provider
       value={{
         products: state.products,
-        addProduct
+        error: state.error,
+        addProduct,
+        getProducts
       }}
     >
       {props.children}

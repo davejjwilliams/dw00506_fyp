@@ -22,11 +22,12 @@ const Register = props => {
   const [user, setUser] = useState({
     name: '',
     email: '',
+    role: 'customer',
     password: '',
     password2: ''
   });
 
-  const { name, email, password, password2 } = user;
+  const { name, email, role, password, password2 } = user;
 
   const onChange = e => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -44,7 +45,7 @@ const Register = props => {
     } else if (password !== password2) {
       M.toast({ html: 'Passwords do not match' });
     } else {
-      register({ name, email, password });
+      register({ name, email, role, password });
     }
   };
 
@@ -64,6 +65,38 @@ const Register = props => {
           </label>
           <input type='email' name='email' value={email} onChange={onChange} />
         </div>
+        <label>
+          <input
+            name='role'
+            type='radio'
+            value='customer'
+            checked={role === 'customer'}
+            onChange={onChange}
+          />
+          <span>Customer</span>
+        </label>{' '}
+        <label>
+          <input
+            name='role'
+            type='radio'
+            value='seller'
+            checked={role === 'seller'}
+            onChange={onChange}
+          />
+          <span>Seller</span>
+        </label>{' '}
+        <label>
+          <input
+            name='role'
+            type='radio'
+            value='manufacturer'
+            checked={role === 'manufacturer'}
+            onChange={onChange}
+          />
+          <span>Manufacturer</span>
+        </label>
+        <br />
+        <br />
         <div className='input-field'>
           <label className='active' htmlFor='password'>
             Password (at least 8 characters, must contain one uppercase, one

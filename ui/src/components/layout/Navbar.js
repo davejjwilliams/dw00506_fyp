@@ -20,6 +20,9 @@ const Navbar = ({ title, icon }) => {
           Logout
         </a>
       </li>
+      <li>
+        <Link to='/newproduct'>New Product</Link>
+      </li>
     </Fragment>
   );
   const guestLinks = (
@@ -47,9 +50,6 @@ const Navbar = ({ title, icon }) => {
             <li>
               <Link to='/about'>About</Link>
             </li>
-            <li>
-              <Link to='/newproduct'>New Product</Link>
-            </li>
             {isAuthenticated ? authLinks : guestLinks}
           </ul>
         </div>
@@ -60,9 +60,6 @@ const Navbar = ({ title, icon }) => {
           <Link to='/about'>About</Link>
         </li>
         {isAuthenticated ? authLinks : guestLinks}
-        <li>
-          <Link to='/newproduct'>New Product</Link>
-        </li>
       </ul>
     </Fragment>
   );

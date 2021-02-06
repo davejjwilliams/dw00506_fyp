@@ -18,16 +18,12 @@ const ProductSchema = mongoose.Schema({
     required: true,
     unique: true
   },
-  seller_key: {
-    type: String,
-    required: true
-  },
-  messages: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'messages'
-    }
-  ],
+  // messagers: [
+  //   {
+  //     type: String,
+  //     required: true
+  //   }
+  // ],
   date: {
     type: Date,
     default: Date.now
