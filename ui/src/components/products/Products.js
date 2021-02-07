@@ -5,7 +5,7 @@ import ProductItem from './ProductItem';
 const Products = () => {
   const productContext = useContext(ProductContext);
 
-  const { products, getProducts } = productContext;
+  const { products, loading, getProducts } = productContext;
 
   useEffect(() => {
     getProducts();
@@ -22,7 +22,7 @@ const Products = () => {
   return (
     <Fragment>
       {products.map(product => (
-        <ProductItem product={product} key={product.id} />
+        <ProductItem product={product} key={product._id} />
       ))}
     </Fragment>
   );

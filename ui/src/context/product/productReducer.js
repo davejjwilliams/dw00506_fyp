@@ -1,4 +1,9 @@
-import { ADD_PRODUCT, GET_PRODUCTS, PRODUCT_ERROR } from '../types';
+import {
+  ADD_PRODUCT,
+  CLEAR_PRODUCTS,
+  GET_PRODUCTS,
+  PRODUCT_ERROR
+} from '../types';
 
 const productReducer = (state, action) => {
   switch (action.type) {
@@ -13,6 +18,11 @@ const productReducer = (state, action) => {
         ...state,
         products: [...state.products, action.payload],
         loading: false
+      };
+    case CLEAR_PRODUCTS:
+      return {
+        ...state,
+        products: []
       };
     case PRODUCT_ERROR:
       return {

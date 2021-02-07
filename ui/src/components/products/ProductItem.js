@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const ProductItem = ({ product }) => {
-  const { name, description } = product;
+  const { name, description, code } = product;
 
   return (
-    <div>
-      {name} - {description}
+    <div className='card'>
+      {name} - {description} - {code}
     </div>
   );
 };

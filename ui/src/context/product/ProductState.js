@@ -43,13 +43,34 @@ const ProductState = props => {
     }
   };
 
+  // Submit Code
+  const submitCode = async code => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    try {
+      const res = await axios.post('/api/products/code', { code }, config);
+      dispatch({ type: ADD_PRODUCT, payload: res.data });
+    } catch (err) {
+      dispatch({ type: PRODUCT_ERROR, payload: err.response.msg });
+    }
+  };
+
+  // Clear Products
+  const clearProducts = () => dispatch({ type: CLEAR_PRODUCTS });
+
   return (
     <ProductContext.Provider
       value={{
         products: state.products,
         error: state.error,
         addProduct,
-        getProducts
+        getProducts,
+        clearProducts,
+        submitCode
       }}
     >
       {props.children}
