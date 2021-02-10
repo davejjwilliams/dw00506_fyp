@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
+import Product from './components/products/Product';
 import NewProduct from './components/products/NewProduct';
 import Code from './components/pages/Code';
 import Register from './components/auth/Register';
@@ -34,6 +35,7 @@ const App = () => {
             <div className='container'>
               <Switch>
                 <PrivateRoute exact path='/' component={Home} />
+                <PrivateRoute exact path='/product/:id' component={Product} />
                 <PrivateRoute exact path='/newproduct' component={NewProduct} />
                 <PrivateRoute exact path='/code' component={Code} />
                 <Route exact path='/about' component={About} />

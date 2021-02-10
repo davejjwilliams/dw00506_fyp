@@ -3,8 +3,9 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
 
-const Product = require('../models/Product');
 const User = require('../models/User');
+const Product = require('../models/Product');
+const Message = require('../models/Message');
 
 // @route   GET api/products
 // @desc    Get user's products
@@ -16,11 +17,8 @@ router.get('/', auth, async (req, res) => {
     if (req.user.role === 'customer') {
       console.log('Get Products Route - Customer Branch');
 
-      // FIGURE THIS OUT - FIND ALL PRODUCTS FROM USER LIST
       const user = await User.findById(req.user.id);
       const test = user.products;
-
-      console.log(test);
 
       const testProducts = await Product.find(
         {
@@ -29,7 +27,6 @@ router.get('/', auth, async (req, res) => {
         function (err, docs) {}
       );
 
-      console.log(testProducts);
       products = testProducts;
     } else if (req.user.role === 'seller') {
       console.log('Get Products Route - Seller Branch');
@@ -40,6 +37,37 @@ router.get('/', auth, async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
+  }
+});
+
+// @route   GET api/products/:id
+// @desc    Get product
+// @access  Private
+router.get('/:id', auth, async (req, res) => {
+  try {
+    let product = await Product.findById(req.params.id);
+
+    if (!product) return res.status(404).json({ msg: 'Product not found' });
+
+    res.json(product);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server Error' });
+  }
+});
+
+// @route   GET api/products/:id/messages
+// @desc    Get product messages
+// @access  Private
+router.get('/:id/messages', auth, async (req, res) => {
+  try {
+    let messages = await Message.find({ product: req.params.id }).sort({
+      date: -1
+    });
+    res.json(messages);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server Error' });
   }
 });
 
@@ -105,12 +133,14 @@ router.post(
     try {
       console.log(req.body);
       const user = await User.findById(req.user.id);
-      console.log(`Found user ${user.name}`);
       const product = await Product.findOne({ code: req.body.code });
-      console.log(`Found product ${product.name}`);
-      user.products.push(product);
 
-      user.save();
+      if (!user.products.includes(product)) {
+        console.log('Add Product');
+        user.products.push(product);
+        user.save();
+      }
+
       res.json(product);
     } catch (err) {
       console.error(err.message);

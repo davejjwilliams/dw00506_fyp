@@ -2,6 +2,8 @@ import {
   ADD_PRODUCT,
   CLEAR_PRODUCTS,
   GET_PRODUCTS,
+  GET_PRODUCT,
+  GET_MESSAGES,
   PRODUCT_ERROR
 } from '../types';
 
@@ -11,6 +13,18 @@ const productReducer = (state, action) => {
       return {
         ...state,
         products: action.payload,
+        loading: false
+      };
+    case GET_PRODUCT:
+      return {
+        ...state,
+        product: action.payload,
+        loading: false
+      };
+    case GET_MESSAGES:
+      return {
+        ...state,
+        messages: action.payload,
         loading: false
       };
     case ADD_PRODUCT:

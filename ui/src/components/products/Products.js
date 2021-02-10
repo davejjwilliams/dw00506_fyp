@@ -20,11 +20,11 @@ const Products = () => {
   }
 
   return (
-    <Fragment>
+    <div className='row'>
       {products.map(product => (
         <ProductItem product={product} key={product._id} />
       ))}
-    </Fragment>
+    </div>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 
 import M from 'materialize-css/dist/js/materialize.min.js';
@@ -62,6 +63,9 @@ const Login = props => {
         </div>
         <input type='submit' value='Submit' className='btn' />
       </form>
+      <p>
+        Don't have an account? <Link to='/register'>Register Here</Link>
+      </p>
     </div>
   );
 };

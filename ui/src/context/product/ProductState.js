@@ -3,6 +3,8 @@ import ProductContext from './productContext';
 import productReducer from './productReducer';
 import {
   GET_PRODUCTS,
+  GET_PRODUCT,
+  GET_MESSAGES,
   ADD_PRODUCT,
   CLEAR_PRODUCTS,
   PRODUCT_ERROR
@@ -12,6 +14,9 @@ import axios from 'axios';
 const ProductState = props => {
   const initialState = {
     products: [],
+    product: {},
+    messages: [],
+    loading: true,
     error: null
   };
 
@@ -22,6 +27,26 @@ const ProductState = props => {
     try {
       const res = await axios.get('/api/products');
       dispatch({ type: GET_PRODUCTS, payload: res.data });
+    } catch (err) {
+      dispatch({ type: PRODUCT_ERROR, payload: err.response.msg });
+    }
+  };
+
+  // Get Product
+  const getProduct = async id => {
+    try {
+      const res = await axios.get(`/api/products/${id}`);
+      dispatch({ type: GET_PRODUCT, payload: res.data });
+    } catch (err) {
+      dispatch({ type: PRODUCT_ERROR, payload: err.response.msg });
+    }
+  };
+
+  // Get Product Messages
+  const getProductMessages = async id => {
+    try {
+      const res = await axios.get(`/api/products/${id}/messages`);
+      dispatch({ type: GET_MESSAGES, payload: res.data });
     } catch (err) {
       dispatch({ type: PRODUCT_ERROR, payload: err.response.msg });
     }
@@ -66,9 +91,14 @@ const ProductState = props => {
     <ProductContext.Provider
       value={{
         products: state.products,
+        product: state.product,
+        messages: state.messages,
+        loading: state.loading,
         error: state.error,
         addProduct,
         getProducts,
+        getProduct,
+        getProductMessages,
         clearProducts,
         submitCode
       }}

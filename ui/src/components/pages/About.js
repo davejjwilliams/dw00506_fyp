@@ -7,7 +7,7 @@ const About = () => {
       <h1>Blockchain-Powered Reassurance</h1>
       <p>Doesn't quite use blockchain yet though</p>
       <Link to='/register' className='btn'>
-        Register Now
+        Get Started
       </Link>
     </div>
   );

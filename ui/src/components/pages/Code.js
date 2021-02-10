@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useContext } from 'react';
 import ProductContext from '../../context/product/productContext';
 
-const Code = () => {
+const Code = props => {
   const productContext = useContext(ProductContext);
 
   const { submitCode } = productContext;
@@ -16,6 +16,7 @@ const Code = () => {
     e.preventDefault();
     console.log('Code Submit');
     submitCode(code);
+    props.history.push('/');
   };
 
   return (

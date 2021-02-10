@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 
 import M from 'materialize-css/dist/js/materialize.min.js';
@@ -122,6 +123,9 @@ const Register = props => {
         </div>
         <input type='submit' value='Submit' className='btn' />
       </form>
+      <p>
+        Already have an account? <Link to='/login'>Sign-In</Link>
+      </p>
     </div>
   );
 };
