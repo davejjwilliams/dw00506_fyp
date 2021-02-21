@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import MessageItem from './MessageItem';
 
-const Messages = messages => {
+const Messages = ({ messages }) => {
   return (
     <Fragment>
       {messages.map(message => (
@@ -14,7 +14,7 @@ const Messages = messages => {
 };
 
 Messages.propTypes = {
-  messages: PropTypes.object.isRequired
+  messages: PropTypes.array.isRequired
 };
 
 export default Messages;

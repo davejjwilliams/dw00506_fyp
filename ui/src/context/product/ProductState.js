@@ -5,6 +5,7 @@ import {
   GET_PRODUCTS,
   GET_PRODUCT,
   GET_MESSAGES,
+  ADD_MESSAGE,
   ADD_PRODUCT,
   CLEAR_PRODUCTS,
   PRODUCT_ERROR
@@ -47,6 +48,26 @@ const ProductState = props => {
     try {
       const res = await axios.get(`/api/products/${id}/messages`);
       dispatch({ type: GET_MESSAGES, payload: res.data });
+    } catch (err) {
+      dispatch({ type: PRODUCT_ERROR, payload: err.response.msg });
+    }
+  };
+
+  // Submit New Message
+  const submitMessage = async message => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    try {
+      const res = await axios.post(
+        `/api/products/${message.product_id}/messages`,
+        message,
+        config
+      );
+      dispatch({ type: ADD_MESSAGE, payload: res.data });
     } catch (err) {
       dispatch({ type: PRODUCT_ERROR, payload: err.response.msg });
     }
@@ -99,6 +120,7 @@ const ProductState = props => {
         getProducts,
         getProduct,
         getProductMessages,
+        submitMessage,
         clearProducts,
         submitCode
       }}

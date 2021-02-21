@@ -2,6 +2,7 @@ import {
   ADD_PRODUCT,
   CLEAR_PRODUCTS,
   GET_PRODUCTS,
+  ADD_MESSAGE,
   GET_PRODUCT,
   GET_MESSAGES,
   PRODUCT_ERROR
@@ -26,6 +27,11 @@ const productReducer = (state, action) => {
         ...state,
         messages: action.payload,
         loading: false
+      };
+    case ADD_MESSAGE:
+      return {
+        ...state,
+        messages: [action.payload, ...state.messages]
       };
     case ADD_PRODUCT:
       return {

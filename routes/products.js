@@ -64,12 +64,43 @@ router.get('/:id/messages', auth, async (req, res) => {
     let messages = await Message.find({ product: req.params.id }).sort({
       date: -1
     });
+    console.log(messages);
     res.json(messages);
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: 'Server Error' });
   }
 });
+
+// @route   POST api/products/:id/messages
+// @desc    Add new product message
+// @access  Private
+router.post(
+  '/:id/messages',
+  [auth, check('message', 'Message is required.')],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { product, content } = req.body;
+
+    try {
+      const newMessage = new Message({
+        product,
+        content
+      });
+
+      const message = await newMessage.save();
+
+      res.json(message);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
 
 // @route   POST api/products
 // @desc    Add new product

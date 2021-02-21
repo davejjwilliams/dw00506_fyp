@@ -26,7 +26,7 @@ const Code = props => {
       <br />
       <form onSubmit={onSubmit}>
         <div className='input-field'>
-          <label className='active' htmlFor='name'>
+          <label className='active' htmlFor='code'>
             Code
           </label>
           <input type='text' name='code' value={code} onChange={onChange} />
