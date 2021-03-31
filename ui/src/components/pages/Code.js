@@ -1,7 +1,13 @@
-import React, { Fragment, useState, useContext } from 'react';
+import React, { Fragment, useState, useContext, useEffect } from 'react';
+import AuthContext from '../../context/auth/authContext';
 import ProductContext from '../../context/product/productContext';
 
 const Code = props => {
+  const { loadUser } = useContext(AuthContext);
+  useEffect(() => {
+    loadUser();
+  }, []);
+
   const productContext = useContext(ProductContext);
 
   const { submitCode } = productContext;

@@ -13,7 +13,7 @@ const Home = () => {
 
   return (
     <Fragment>
-      <h1>Welcome to the tracking app{user ? `, ${user.name}.` : '.'}</h1>
+      <h1>Your Products</h1>
       <div>
         <Products />
       </div>

@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
@@ -8,8 +8,12 @@ const Navbar = ({ title, icon }) => {
   const authContext = useContext(AuthContext);
   const productContext = useContext(ProductContext);
 
-  const { isAuthenticated, user, logout } = authContext;
+  const { isAuthenticated, user, loadUser, logout } = authContext;
   const { clearProducts } = productContext;
+
+  useEffect(() => {
+    loadUser();
+  }, []);
 
   const onLogout = () => {
     logout();
@@ -18,17 +22,22 @@ const Navbar = ({ title, icon }) => {
 
   const authLinks = (
     <Fragment>
-      <li>Hello {user && user.name}</li>
+      <li>
+        <Link to='/'>Welcome, {user && user.name}</Link>
+      </li>
+      {user && user.role === 'customer' ? (
+        <li>
+          <Link to='/code'>Enter Code</Link>
+        </li>
+      ) : (
+        <li>
+          <Link to='/newproduct'>New Product</Link>
+        </li>
+      )}
       <li>
         <a onClick={onLogout} href='#!'>
           Logout
         </a>
-      </li>
-      <li>
-        <Link to='/newproduct'>New Product</Link>
-      </li>
-      <li>
-        <Link to='/code'>Enter Code</Link>
       </li>
     </Fragment>
   );
@@ -48,13 +57,15 @@ const Navbar = ({ title, icon }) => {
           <Link to='/' className='brand-logo center'>
             {title}
           </Link>
-          <a href='#' data-target='mobile-demo' className='sidenav-trigger'>
+          <a href='#!' data-target='mobile-demo' className='sidenav-trigger'>
             <i className='material-icons'>menu</i>
           </a>
-          <ul className='right hide-on-med-and-down'>
+          <ul className='left hide-on-med-and-down'>
             <li>
               <Link to='/about'>About</Link>
             </li>
+          </ul>
+          <ul className='right hide-on-med-and-down'>
             {isAuthenticated ? authLinks : guestLinks}
           </ul>
         </div>

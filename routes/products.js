@@ -64,7 +64,6 @@ router.get('/:id/messages', auth, async (req, res) => {
     let messages = await Message.find({ product: req.params.id }).sort({
       date: -1
     });
-    console.log(messages);
     res.json(messages);
   } catch (err) {
     console.error(err.message);
@@ -82,6 +81,12 @@ router.post(
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
+    }
+
+    if (req.user.role === 'customer') {
+      res
+        .status(401)
+        .json({ msg: 'Customer is not authorized to create messages' });
     }
 
     const { product, content } = req.body;
@@ -121,7 +126,7 @@ router.post(
     const { name, description } = req.body;
 
     try {
-      const code = Math.random().toString(36).substring(6);
+      const code = Math.random().toString(36).substring(6).toLowerCase();
 
       const newProduct = new Product({
         name,
@@ -164,7 +169,9 @@ router.post(
     try {
       console.log(req.body);
       const user = await User.findById(req.user.id);
-      const product = await Product.findOne({ code: req.body.code });
+      const product = await Product.findOne({
+        code: req.body.code.toLowerCase()
+      });
 
       if (!user.products.includes(product)) {
         console.log('Add Product');

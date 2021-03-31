@@ -16,7 +16,7 @@ const Product = ({ match }) => {
     getProduct,
     getProductMessages
   } = productContext;
-  const { loadUser } = authContext;
+  const { user, loadUser } = authContext;
 
   useEffect(() => {
     loadUser();
@@ -31,9 +31,12 @@ const Product = ({ match }) => {
           <img src='https://via.placeholder.com/300' alt='Placeholder' />
         </div>
         <div className='col s6'>
-          <Link to={`/product/${match.params.id}/newmessage`} className='btn'>
-            Add Message
-          </Link>
+          {user && user.role !== 'customer' && (
+            <Link to={`/product/${match.params.id}/newmessage`} className='btn'>
+              Add Message
+            </Link>
+          )}
+
           <h1>{product && product.name}</h1>
           <h5>{product && product.description}</h5>
         </div>

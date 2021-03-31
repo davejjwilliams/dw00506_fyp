@@ -1,8 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import ProductContext from '../../context/product/productContext';
+import AuthContext from '../../context/auth/authContext';
 
 const NewProduct = props => {
+  const authContext = useContext(AuthContext);
   const productContext = useContext(ProductContext);
+
+  useEffect(() => {
+    authContext.loadUser();
+  }, []);
 
   const [product, setProduct] = useState({
     name: '',
