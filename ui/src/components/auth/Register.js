@@ -1,6 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
+import { KEYUTIL } from 'jsrsasign';
 
 import M from 'materialize-css/dist/js/materialize.min.js';
 
@@ -9,26 +10,50 @@ const Register = props => {
 
   const { isAuthenticated, error, register, clearErrors } = authContext;
 
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    role: 'customer',
+    pubKey: '',
+    privKey: '',
+    password: '',
+    password2: ''
+  });
+
+  const { name, email, role, pubKey, privKey, password, password2 } = user;
+
+  const genKeys = () => {
+    // Generate 1024-bit RSA keypair
+    const kp = KEYUTIL.generateKeypair('RSA', 512);
+
+    // Separate Private and Public Keys
+    var prvKey = kp.prvKeyObj;
+    var pubKey = kp.pubKeyObj;
+
+    // Retrieve PEM for both keys
+    var prvKeyPEM = KEYUTIL.getPEM(prvKey, 'PKCS8PRV');
+    var pubKeyPEM = KEYUTIL.getPEM(pubKey);
+
+    // Update UI
+    setUser({
+      ...user,
+      privKey: prvKeyPEM,
+      pubKey: pubKeyPEM
+    });
+  };
+
   useEffect(() => {
     if (isAuthenticated) {
       props.history.push('/');
     }
+
+    genKeys();
 
     if (error === 'User already exists') {
       M.toast({ html: 'User with this email already exists.' });
       clearErrors();
     }
   }, [error, isAuthenticated, props.history]);
-
-  const [user, setUser] = useState({
-    name: '',
-    email: '',
-    role: 'customer',
-    password: '',
-    password2: ''
-  });
-
-  const { name, email, role, password, password2 } = user;
 
   const onChange = e => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -46,7 +71,7 @@ const Register = props => {
     } else if (password !== password2) {
       M.toast({ html: 'Passwords do not match' });
     } else {
-      register({ name, email, role, password });
+      register({ name, email, role, pubKey, password });
     }
   };
 
@@ -96,6 +121,17 @@ const Register = props => {
           />
           <span>Manufacturer</span>
         </label>
+        {role !== 'customer' && (
+          <Fragment>
+            <br />
+            <br />
+            <h4>Public Key:</h4>
+            {pubKey}
+            <br />
+            <h4>Private Key:</h4>
+            {privKey}
+          </Fragment>
+        )}
         <br />
         <br />
         <div className='input-field'>
