@@ -18,12 +18,13 @@ const ProductSchema = mongoose.Schema({
     required: true,
     unique: true
   },
-  // messagers: [
-  //   {
-  //     type: String,
-  //     required: true
-  //   }
-  // ],
+  manufacturers: [
+    {
+      name: { type: String },
+      email: { type: String },
+      public_key: { type: String }
+    }
+  ],
   date: {
     type: Date,
     default: Date.now

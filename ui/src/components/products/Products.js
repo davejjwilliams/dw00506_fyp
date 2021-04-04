@@ -14,7 +14,7 @@ const Products = () => {
   if (products.length === 0) {
     return (
       <Fragment>
-        <h2>You aren't currently tracking any products.</h2>
+        <h2>There are no products to show.</h2>
       </Fragment>
     );
   }

@@ -12,10 +12,11 @@ const NewProduct = props => {
 
   const [product, setProduct] = useState({
     name: '',
-    description: ''
+    description: '',
+    manufacturer_emails: ''
   });
 
-  const { name, description } = product;
+  const { name, description, manufacturer_emails } = product;
 
   const onChange = e => {
     setProduct({ ...product, [e.target.name]: e.target.value });
@@ -26,7 +27,8 @@ const NewProduct = props => {
     productContext.addProduct(product);
     setProduct({
       name: '',
-      description: ''
+      description: '',
+      manufacturer_emails: ''
     });
     props.history.push('/');
   };
@@ -49,6 +51,18 @@ const NewProduct = props => {
             type='text'
             name='description'
             value={description}
+            onChange={onChange}
+          />
+        </div>
+        <div className='input-field'>
+          <label className='active' htmlFor='manufacturer_emails'>
+            Manufacturers - Enter the emails of all manufacturers working on
+            this project, separated by commas.
+          </label>
+          <input
+            type='text'
+            name='manufacturer_emails'
+            value={manufacturer_emails}
             onChange={onChange}
           />
         </div>

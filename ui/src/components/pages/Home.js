@@ -15,6 +15,15 @@ const Home = () => {
     <Fragment>
       <h1>Your Products</h1>
       <div>
+        {user && user.role === 'customer' && (
+          <p>Enter a product code to follow a new product.</p>
+        )}
+        {user && user.role === 'seller' && (
+          <p>Add a new product from the top menu button.</p>
+        )}
+        {user && user.role === 'manufacturer' && (
+          <p>Products sellers have included you in will appear below.</p>
+        )}
         <Products />
       </div>
     </Fragment>

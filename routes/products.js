@@ -31,8 +31,14 @@ router.get('/', auth, async (req, res) => {
     } else if (req.user.role === 'seller') {
       console.log('Get Products Route - Seller Branch');
       products = await Product.find({ seller: req.user.id });
+    } else if (req.user.role === 'manufacturer') {
+      console.log('Get Products Route - Manufacturer Branch');
+      // products = await Product.find({manufacturers: })
+      const user = await User.findById(req.user.id);
+      products = await Product.find({
+        $or: [{ manufacturers: { $elemMatch: { email: user.email } } }]
+      });
     }
-
     res.json(products);
   } catch (err) {
     console.error(err.message);
@@ -123,15 +129,27 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, description } = req.body;
+    const { name, description, manufacturer_emails } = req.body;
 
     try {
       const code = Math.random().toString(36).substring(6).toLowerCase();
+
+      var split_emails = manufacturer_emails.split(',');
+      // var manufacturers = [];
+
+      var foundManufacturers = await User.find({
+        email: { $in: split_emails }
+      }).select('name email public_key');
+
+      // manufacturers.push(foundManufacturer);
+
+      console.log(foundManufacturers);
 
       const newProduct = new Product({
         name,
         description,
         code,
+        manufacturers: foundManufacturers,
         seller: req.user.id
       });
 
