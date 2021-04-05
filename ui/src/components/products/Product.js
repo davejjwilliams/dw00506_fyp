@@ -31,17 +31,20 @@ const Product = ({ match }) => {
           <img src='https://via.placeholder.com/300' alt='Placeholder' />
         </div>
         <div className='col s6'>
-          {user && user.role !== 'customer' && (
-            <Link to={`/product/${match.params.id}/newmessage`} className='btn'>
-              Add Message
-            </Link>
-          )}
-
           <h1>{product && product.name}</h1>
           <h5>{product && product.description}</h5>
+          <br />
         </div>
       </div>
-      <h3 className='center'>Updates</h3>
+      <div className='center'>
+        <h3>Updates</h3>
+        {user && user.role !== 'customer' && (
+          <Link to={`/product/${match.params.id}/newmessage`} className='btn'>
+            Add Message
+          </Link>
+        )}
+      </div>
+
       <div>
         {messages.length !== 0 ? (
           <Messages messages={messages} />

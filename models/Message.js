@@ -9,6 +9,10 @@ const MessageSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  signature: {
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now
