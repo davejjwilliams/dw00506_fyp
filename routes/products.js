@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
+const { KEYUTIL, KJUR } = require('jsrsasign');
 
 const User = require('../models/User');
 const Product = require('../models/Product');
@@ -30,7 +31,6 @@ router.get('/', auth, async (req, res) => {
       products = await Product.find({ seller: req.user.id });
     } else if (req.user.role === 'manufacturer') {
       console.log('Get Products Route - Manufacturer Branch');
-      // products = await Product.find({manufacturers: })
       const user = await User.findById(req.user.id);
       products = await Product.find({
         $or: [{ manufacturers: { $elemMatch: { email: user.email } } }]
@@ -74,12 +74,16 @@ router.get('/:id/messages', auth, async (req, res) => {
   }
 });
 
-// @route   POST api/products/:id/messages
+// @route   POST api/products/messages
 // @desc    Add new product message
 // @access  Private
 router.post(
-  '/:id/messages',
-  [auth, check('content', 'Message is required.')],
+  '/messages',
+  [
+    auth,
+    check('content', 'Message is required.').not().isEmpty(),
+    check('signature', 'Signature is required.').not().isEmpty()
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -92,18 +96,43 @@ router.post(
         .json({ msg: 'Customer is not authorized to create messages' });
     }
 
-    const { product, content, public_key, signature } = req.body;
+    const { product_id, content, public_key, signature } = req.body;
 
     try {
+      const product = await Product.findById(product_id);
+
+      // Check if public key received is valid
+      var auth_keys = product.manufacturers.map(x => {
+        // replace to remove graphical display symbols
+        return x.public_key.replace(new RegExp('\r\n', 'g'), '');
+      });
+
+      // if public key received is not authorised
+      if (!auth_keys.includes(public_key)) {
+        console.log('Key is not authorised.');
+        throw 'exception';
+      }
+
+      // signature verification
+      var pub = KEYUTIL.getKey(public_key);
+      var sig = new KJUR.crypto.Signature({ alg: 'SHA1withRSA' });
+      sig.init(pub);
+      sig.updateString(content);
+      var isValid = sig.verify(signature); // signature validity
+
+      if (!isValid) {
+        console.log('Signature is not valid.');
+        throw 'exception';
+      }
+
       const newMessage = new Message({
-        product,
+        product: product_id,
         content,
         public_key,
         signature
       });
 
       const message = await newMessage.save();
-
       res.json(message);
     } catch (err) {
       console.error(err.message);

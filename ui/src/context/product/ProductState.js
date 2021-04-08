@@ -62,11 +62,7 @@ const ProductState = props => {
     };
 
     try {
-      const res = await axios.post(
-        `/api/products/${message.product_id}/messages`,
-        message,
-        config
-      );
+      const res = await axios.post(`/api/products/messages`, message, config);
       dispatch({ type: ADD_MESSAGE, payload: res.data });
     } catch (err) {
       dispatch({ type: PRODUCT_ERROR, payload: err.response.msg });

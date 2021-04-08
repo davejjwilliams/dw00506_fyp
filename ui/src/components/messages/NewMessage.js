@@ -60,7 +60,7 @@ const NewMessage = props => {
       console.log('Content', content);
       console.log('Public Key', user.public_key);
       // submitMessage({
-      //   product: product._id,
+      //   product_id: product._id,
       //   content,
       //   public_key: user.public_key,
       //   signature
