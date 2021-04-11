@@ -14,11 +14,10 @@ const Message = require('../models/Message');
 router.get('/', auth, async (req, res) => {
   try {
     let products = [];
+    const user = await User.findById(req.user.id);
 
-    if (req.user.role === 'customer') {
+    if (user.role === 'customer') {
       console.log('Get Products Route - Customer Branch');
-
-      const user = await User.findById(req.user.id);
       const test = user.products;
 
       const testProducts = await Product.find({
@@ -26,12 +25,11 @@ router.get('/', auth, async (req, res) => {
       });
 
       products = testProducts;
-    } else if (req.user.role === 'seller') {
+    } else if (user.role === 'seller') {
       console.log('Get Products Route - Seller Branch');
       products = await Product.find({ seller: req.user.id });
-    } else if (req.user.role === 'manufacturer') {
+    } else if (user.role === 'manufacturer') {
       console.log('Get Products Route - Manufacturer Branch');
-      const user = await User.findById(req.user.id);
       products = await Product.find({
         $or: [{ manufacturers: { $elemMatch: { email: user.email } } }]
       });
