@@ -105,17 +105,18 @@ router.post(
     try {
       const product = await Product.findById(product_id);
 
-      // Check if public key received is valid
-      var auth_keys = product.manufacturers.map(x => {
+      // check if public key has been whitelisted
+      var index = product.manufacturers.findIndex(
         // replace to remove graphical display symbols
-        return x.public_key.replace(new RegExp('\r\n', 'g'), '');
-      });
+        m => m.public_key.replace(new RegExp('\r\n', 'g'), '') === public_key
+      );
 
-      // if public key received is not authorised
-      if (!auth_keys.includes(public_key)) {
+      if (index === -1) {
         console.log('Key is not authorised.');
         throw 'exception';
       }
+
+      const signer = product.manufacturers[index];
 
       // signature verification
       var pub = KEYUTIL.getKey(public_key);
@@ -150,8 +151,9 @@ router.post(
       const newMessage = new Message({
         product: product_id,
         content,
-        public_key,
-        signature
+        sigNumber: sigCount,
+        signature,
+        signer
       });
 
       const message = await newMessage.save();

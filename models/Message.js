@@ -9,9 +9,18 @@ const MessageSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  sigNumber: {
+    type: Number,
+    required: true
+  },
   signature: {
     type: String,
     required: true
+  },
+  signer: {
+    name: { type: String },
+    email: { type: String },
+    public_key: { type: String }
   },
   date: {
     type: Date,
