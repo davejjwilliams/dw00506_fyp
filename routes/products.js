@@ -2,7 +2,13 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
+const config = require('config');
+
+// Signature Validation
 const { KEYUTIL, KJUR } = require('jsrsasign');
+// Blockchain Interaction
+const web3 = require('web3');
+const abi = require('../signatures/build/contracts/MessageSignatures.json');
 
 const User = require('../models/User');
 const Product = require('../models/Product');
@@ -123,6 +129,24 @@ router.post(
         throw 'exception';
       }
 
+      var web3js = new web3(
+        new web3.providers.HttpProvider('HTTP://127.0.0.1:7545')
+      );
+
+      var contractAddress = config.get('contractAddress');
+      const messageSignatures = new web3js.eth.Contract(
+        abi.abi,
+        contractAddress
+      );
+
+      const accounts = await web3js.eth.getAccounts();
+      await messageSignatures.methods
+        .createSignature(signature)
+        .send({ from: accounts[0], gas: 3000000 });
+
+      // To be added to Message Object
+      const sigCount = await messageSignatures.methods.sigCount().call();
+
       const newMessage = new Message({
         product: product_id,
         content,
@@ -132,6 +156,14 @@ router.post(
 
       const message = await newMessage.save();
       res.json(message);
+
+      // Additional code for fetching signatures from blockchain
+      // const sigCount = await messageSignatures.methods.sigCount().call();
+      // console.log('Sigcount: ' + sigCount);
+      // const latestSignature = await messageSignatures.methods
+      //   .signatures(sigCount)
+      //   .call();
+      // console.log('Signature' + latestSignature.content);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');

@@ -1,3 +1,4 @@
 {
-  "jwtSecret": "secret"
+  "jwtSecret": "secret",
+  "contractAddress": "0xA6bc83F47d6E8C0AB84c468Aa89255d864c7077c"
 }
