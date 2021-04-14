@@ -54,18 +54,18 @@ const NewMessage = props => {
     if (content === '') {
       M.toast({ html: 'Message cannot be empty.' });
     } else {
-      console.log('Message Submit');
-      console.log('Signature', signature);
-      console.log('Product ID', product._id);
-      console.log('Content', content);
-      console.log('Public Key', user.public_key);
-      // submitMessage({
-      //   product_id: product._id,
-      //   content,
-      //   public_key: user.public_key,
-      //   signature
-      // });
-      // props.history.push(`/product/${props.match.params.id}`);
+      // console.log('Message Submit');
+      // console.log('Signature', signature);
+      // console.log('Product ID', product._id);
+      // console.log('Content', content);
+      // console.log('Public Key', user.public_key);
+      submitMessage({
+        product_id: product._id,
+        content,
+        public_key: user.public_key.replace(new RegExp('\r\n', 'g'), ''),
+        signature
+      });
+      props.history.push(`/product/${props.match.params.id}`);
     }
   };
 

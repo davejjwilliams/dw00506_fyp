@@ -1,15 +1,19 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import M from 'materialize-css/dist/js/materialize.min.js';
 
 import MessageItem from './MessageItem';
 
 const Messages = ({ messages }) => {
+  useEffect(() => {
+    M.AutoInit();
+  }, []);
   return (
-    <Fragment>
+    <ul className='collapsible'>
       {messages.map(message => (
         <MessageItem message={message} key={message._id} />
       ))}
-    </Fragment>
+    </ul>
   );
 };
 
