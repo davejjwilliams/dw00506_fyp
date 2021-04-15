@@ -21,13 +21,10 @@ const MessageItem = ({ message }) => {
         </div>
       </div>
       <div className='collapsible-body'>
-        <div>
-          <p>
-            Signature: {signature}
-            <br />
-            Public Key: {signer.public_key}
-          </p>
-        </div>
+        <p style={{ overflowWrap: 'break-word' }}>Signature: {signature}</p>
+        <p style={{ overflowWrap: 'break-word' }}>
+          Public Key: {signer.public_key}
+        </p>
       </div>
     </li>
   );

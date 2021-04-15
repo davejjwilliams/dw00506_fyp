@@ -189,7 +189,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, description, manufacturer_emails } = req.body;
+    const { name, description, image_url, manufacturer_emails } = req.body;
 
     try {
       const code = Math.random().toString(36).substring(6).toLowerCase();
@@ -203,6 +203,7 @@ router.post(
       const newProduct = new Product({
         name,
         description,
+        image_url,
         code,
         manufacturers: foundManufacturers,
         seller: req.user.id

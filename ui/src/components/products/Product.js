@@ -26,11 +26,17 @@ const Product = ({ match }) => {
 
   return (
     <div>
+      <br />
       <div className='row'>
-        <div className='col s6'>
-          <img src='https://via.placeholder.com/300' alt='Placeholder' />
+        <div className='col s12 m6'>
+          <img
+            src={product.image_url}
+            alt='Placeholder'
+            height='auto'
+            style={{ maxWidth: '100%' }}
+          />
         </div>
-        <div className='col s6'>
+        <div className='col s12 m6'>
           <h1>{product && product.name}</h1>
           <h5>{product && product.description}</h5>
           <br />

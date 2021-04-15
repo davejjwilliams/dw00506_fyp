@@ -13,10 +13,11 @@ const NewProduct = props => {
   const [product, setProduct] = useState({
     name: '',
     description: '',
+    image_url: '',
     manufacturer_emails: ''
   });
 
-  const { name, description, manufacturer_emails } = product;
+  const { name, description, image_url, manufacturer_emails } = product;
 
   const onChange = e => {
     setProduct({ ...product, [e.target.name]: e.target.value });
@@ -51,6 +52,17 @@ const NewProduct = props => {
             type='text'
             name='description'
             value={description}
+            onChange={onChange}
+          />
+        </div>
+        <div className='input-field'>
+          <label className='active' htmlFor='image_url'>
+            Image URL
+          </label>
+          <input
+            type='text'
+            name='image_url'
+            value={image_url}
             onChange={onChange}
           />
         </div>

@@ -13,6 +13,10 @@ const ProductSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  image_url: {
+    type: String,
+    required: true
+  },
   code: {
     type: String,
     required: true,
