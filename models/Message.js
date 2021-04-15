@@ -9,7 +9,7 @@ const MessageSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  sigNumber: {
+  sig_number: {
     type: Number,
     required: true
   },

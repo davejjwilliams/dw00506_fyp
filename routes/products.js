@@ -151,7 +151,7 @@ router.post(
       const newMessage = new Message({
         product: product_id,
         content,
-        sigNumber: sigCount,
+        sig_number: sigCount,
         signature,
         signer
       });
@@ -172,6 +172,41 @@ router.post(
     }
   }
 );
+
+// @route   GET api/products/signatures/:id
+// @desc    Verify message signature
+// @access  Private
+router.get('/signatures/:id', auth, async (req, res) => {
+  try {
+    const message = await Message.findOne({ sig_number: req.params.id });
+
+    var web3js = new web3(
+      new web3.providers.HttpProvider('HTTP://127.0.0.1:7545')
+    );
+
+    var contractAddress = config.get('contractAddress');
+    const messageSignatures = new web3js.eth.Contract(abi.abi, contractAddress);
+
+    const latestSignature = await messageSignatures.methods
+      .signatures(req.params.id)
+      .call();
+
+    const signature = latestSignature.content;
+    const pk = message.signer.public_key.replace(new RegExp('\r\n', 'g'), '');
+
+    // signature verification
+    var pub = KEYUTIL.getKey(pk);
+    var sig = new KJUR.crypto.Signature({ alg: 'SHA1withRSA' });
+    sig.init(pub);
+    sig.updateString(message.content);
+    var isValid = sig.verify(signature); // signature validity
+
+    res.json({ signature, isValid });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Server Error' });
+  }
+});
 
 // @route   POST api/products
 // @desc    Add new product
