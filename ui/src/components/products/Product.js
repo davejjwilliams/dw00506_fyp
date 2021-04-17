@@ -9,13 +9,7 @@ const Product = ({ match }) => {
   const productContext = useContext(ProductContext);
   const authContext = useContext(AuthContext);
 
-  const {
-    product,
-    messages,
-    loading,
-    getProduct,
-    getProductMessages
-  } = productContext;
+  const { product, messages, getProduct, getProductMessages } = productContext;
   const { user, loadUser } = authContext;
 
   useEffect(() => {
@@ -28,7 +22,7 @@ const Product = ({ match }) => {
     <div>
       <br />
       <div className='row'>
-        <div className='col s12 m6'>
+        <div className='col s12 m6 card'>
           <img
             src={product.image_url}
             alt='Placeholder'
@@ -37,9 +31,14 @@ const Product = ({ match }) => {
           />
         </div>
         <div className='col s12 m6'>
-          <h1>{product && product.name}</h1>
-          <h5>{product && product.description}</h5>
-          <br />
+          <div className='container hide-on-small-only'>
+            <h2>{product && product.name}</h2>
+            <h6>{product && product.description}</h6>
+          </div>
+          <div className='hide-on-med-and-up'>
+            <h3>{product && product.name}</h3>
+            <p>{product && product.description}</p>
+          </div>
         </div>
       </div>
       <div className='center'>
