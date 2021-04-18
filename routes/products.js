@@ -117,8 +117,9 @@ router.post(
 
       // key was not whitelisted and the signer isn't the product seller
       if (index === -1 && !product.seller.toString().includes(user._id)) {
-        console.log('Key is not authorised.');
-        throw 'exception';
+        return res
+          .status(401)
+          .json({ msg: 'User is not authorised to create product messages.' });
       }
 
       const signer = product.manufacturers[index];
@@ -131,8 +132,7 @@ router.post(
       var isValid = sig.verify(signature); // signature validity
 
       if (!isValid) {
-        console.log('Signature is not valid.');
-        throw 'exception';
+        return res.status(400).json({ msg: 'Signature is not valid.' });
       }
 
       var web3js = new web3(
@@ -232,8 +232,9 @@ router.post(
       const user = await User.findById(req.user.id);
 
       if (user.role !== 'seller') {
-        console.log('Product creator must be a seller.');
-        throw 'exception';
+        return res
+          .status(401)
+          .json({ msg: 'Product creator must be a seller.' });
       }
 
       const code = Math.random().toString(36).substring(6).toLowerCase();
@@ -287,8 +288,9 @@ router.post(
       const user = await User.findById(req.user.id);
 
       if (user.role !== 'customer') {
-        console.log('Only customers can follow products.');
-        throw 'exception';
+        return res
+          .status(401)
+          .json({ msg: 'Only customers can follow products.' });
       }
 
       const product = await Product.findOne({
@@ -299,8 +301,7 @@ router.post(
       console.log(product);
 
       if (user.products.includes(product._id)) {
-        console.log('Product already followed.');
-        throw 'exception';
+        return res.status(400).json({ msg: 'Product already followed.' });
       }
 
       user.products.push(product);
