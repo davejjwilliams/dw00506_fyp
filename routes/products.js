@@ -85,7 +85,9 @@ router.post(
   '/messages',
   [
     auth,
+    check('product_id', 'Product is required.').not().isEmpty(),
     check('content', 'Message is required.').not().isEmpty(),
+    check('public_key', 'Public key is required.').not().isEmpty(),
     check('signature', 'Signature is required.').not().isEmpty()
   ],
   async (req, res) => {
@@ -94,15 +96,17 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    if (req.user.role === 'customer') {
-      res
-        .status(401)
-        .json({ msg: 'Customer is not authorized to create messages' });
-    }
-
     const { product_id, content, public_key, signature } = req.body;
 
     try {
+      const user = await User.findById(req.user.id);
+
+      if (user.role === 'customer') {
+        res
+          .status(401)
+          .json({ msg: 'Customer is not authorized to create messages' });
+      }
+
       const product = await Product.findById(product_id);
 
       // check if public key has been whitelisted
@@ -111,7 +115,8 @@ router.post(
         m => m.public_key.replace(new RegExp('\r\n', 'g'), '') === public_key
       );
 
-      if (index === -1) {
+      // key was not whitelisted and the signer isn't the product seller
+      if (index === -1 && !product.seller.toString().includes(user._id)) {
         console.log('Key is not authorised.');
         throw 'exception';
       }
@@ -158,14 +163,6 @@ router.post(
 
       const message = await newMessage.save();
       res.json(message);
-
-      // Additional code for fetching signatures from blockchain
-      // const sigCount = await messageSignatures.methods.sigCount().call();
-      // console.log('Sigcount: ' + sigCount);
-      // const latestSignature = await messageSignatures.methods
-      //   .signatures(sigCount)
-      //   .call();
-      // console.log('Signature' + latestSignature.content);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -216,7 +213,12 @@ router.post(
   [
     auth,
     check('name', 'Name is required.').not().isEmpty(),
-    check('description', 'Description is required.').not().isEmpty()
+    check('description', 'Description is required.').not().isEmpty(),
+    check('image_url', 'Image URL is required.').not().isEmpty(),
+    check(
+      'manufacturer_emails',
+      'Manufacturer emails must be included.'
+    ).exists()
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -227,6 +229,13 @@ router.post(
     const { name, description, image_url, manufacturer_emails } = req.body;
 
     try {
+      const user = await User.findById(req.user.id);
+
+      if (user.role !== 'seller') {
+        console.log('Product creator must be a seller.');
+        throw 'exception';
+      }
+
       const code = Math.random().toString(36).substring(6).toLowerCase();
 
       var split_emails = manufacturer_emails.split(',');
@@ -245,7 +254,6 @@ router.post(
       });
 
       const product = await newProduct.save();
-
       res.json(product);
     } catch (err) {
       console.error(err.message);
@@ -276,17 +284,27 @@ router.post(
   [auth, check('code', 'Code is required.')],
   async (req, res) => {
     try {
-      console.log(req.body);
       const user = await User.findById(req.user.id);
+
+      if (user.role !== 'customer') {
+        console.log('Only customers can follow products.');
+        throw 'exception';
+      }
+
       const product = await Product.findOne({
         code: req.body.code.toLowerCase()
       });
 
-      if (!user.products.includes(product)) {
-        console.log('Add Product');
-        user.products.push(product);
-        user.save();
+      console.log(user.products);
+      console.log(product);
+
+      if (user.products.includes(product._id)) {
+        console.log('Product already followed.');
+        throw 'exception';
       }
+
+      user.products.push(product);
+      user.save();
 
       res.json(product);
     } catch (err) {
