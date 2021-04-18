@@ -122,7 +122,19 @@ router.post(
           .json({ msg: 'User is not authorised to create product messages.' });
       }
 
-      const signer = product.manufacturers[index];
+      let signer = {};
+
+      // signer is product seller
+      if (index === -1) {
+        signer = {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          public_key: user.public_key
+        };
+      } else {
+        signer = product.manufacturers[index];
+      }
 
       // signature verification
       var pub = KEYUTIL.getKey(public_key);
@@ -297,8 +309,7 @@ router.post(
         code: req.body.code.toLowerCase()
       });
 
-      console.log(user.products);
-      console.log(product);
+      if (!product) return res.status(404).json({ msg: 'Product not found' });
 
       if (user.products.includes(product._id)) {
         return res.status(400).json({ msg: 'Product already followed.' });

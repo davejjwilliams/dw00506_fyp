@@ -10,12 +10,42 @@ const NewMessage = props => {
   const { user, loadUser } = authContext;
 
   const productContext = useContext(ProductContext);
-  const { product, submitMessage, getProduct } = productContext;
+  const {
+    product,
+    formSuccess,
+    error,
+    submitMessage,
+    getProduct,
+    resetFormSuccess,
+    clearProductErrors
+  } = productContext;
 
   useEffect(() => {
     loadUser();
     getProduct(props.match.params.id);
   }, []);
+
+  useEffect(() => {
+    if (formSuccess) {
+      resetFormSuccess();
+      props.history.push(`/product/${props.match.params.id}`);
+    }
+
+    if (error === 'Customer is not authorized to create messages') {
+      M.toast({ html: 'You cannot create a message as a customer.' });
+      clearProductErrors();
+    }
+    if (error === 'User is not authorised to create product messages.') {
+      M.toast({
+        html: 'You are not authorised to create updates for this product.'
+      });
+      clearProductErrors();
+    }
+    if (error === 'Signature is not valid.') {
+      M.toast({ html: 'The signature is not valid.' });
+      clearProductErrors();
+    }
+  }, [formSuccess, error]);
 
   const [messageFields, setMessageFields] = useState({
     content: '',
@@ -51,21 +81,15 @@ const NewMessage = props => {
 
   const onSubmit = e => {
     e.preventDefault();
-    if (content === '') {
-      M.toast({ html: 'Message cannot be empty.' });
+    if (content === '' || privKey === '' || signature === '') {
+      M.toast({ html: 'Please fill in all fields and sign your message.' });
     } else {
-      // console.log('Message Submit');
-      // console.log('Signature', signature);
-      // console.log('Product ID', product._id);
-      // console.log('Content', content);
-      // console.log('Public Key', user.public_key);
       submitMessage({
         product_id: product._id,
         content,
         public_key: user.public_key.replace(new RegExp('\r\n', 'g'), ''),
         signature
       });
-      props.history.push(`/product/${props.match.params.id}`);
     }
   };
 

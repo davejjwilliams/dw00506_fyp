@@ -5,7 +5,9 @@ import {
   ADD_MESSAGE,
   GET_PRODUCT,
   GET_MESSAGES,
-  PRODUCT_ERROR
+  PRODUCT_ERROR,
+  CLEAR_PRODUCT_ERRORS,
+  RESET_FORM_SUCCESS
 } from '../types';
 
 const productReducer = (state, action) => {
@@ -31,13 +33,15 @@ const productReducer = (state, action) => {
     case ADD_MESSAGE:
       return {
         ...state,
-        messages: [action.payload, ...state.messages]
+        messages: [action.payload, ...state.messages],
+        formSuccess: true
       };
     case ADD_PRODUCT:
       return {
         ...state,
         products: [...state.products, action.payload],
-        loading: false
+        loading: false,
+        formSuccess: true
       };
     case CLEAR_PRODUCTS:
       return {
@@ -48,6 +52,16 @@ const productReducer = (state, action) => {
       return {
         ...state,
         error: action.payload
+      };
+    case CLEAR_PRODUCT_ERRORS:
+      return {
+        ...state,
+        error: null
+      };
+    case RESET_FORM_SUCCESS:
+      return {
+        ...state,
+        formSuccess: false
       };
     default:
       return state;
