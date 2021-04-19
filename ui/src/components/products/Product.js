@@ -27,7 +27,7 @@ const Product = ({ match }) => {
             src={product.image_url}
             alt='Placeholder'
             height='auto'
-            style={{ maxWidth: '100%' }}
+            style={{ maxWidth: '100%', display: 'block' }}
           />
         </div>
         <div className='col s12 m6'>

@@ -13,7 +13,7 @@ const Home = () => {
 
   return (
     <Fragment>
-      <h1>Your Products</h1>
+      <h2>Your Products</h2>
       <div>
         {user && user.role === 'customer' && (
           <p>Enter a product code to follow a new product.</p>

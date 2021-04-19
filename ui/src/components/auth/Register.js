@@ -77,7 +77,7 @@ const Register = props => {
 
   return (
     <div>
-      <h1>Register Account</h1>
+      <h1>Register</h1>
       <form onSubmit={onSubmit}>
         <div className='input-field'>
           <label className='active' htmlFor='name'>
@@ -125,6 +125,7 @@ const Register = props => {
           <Fragment>
             <br />
             <br />
+            <h2 className='red-text'>Save the two following keys:</h2>
             <h4>Public Key:</h4>
             {pubKey}
             <br />
@@ -160,7 +161,7 @@ const Register = props => {
         <input type='submit' value='Submit' className='btn' />
       </form>
       <p>
-        Already have an account? <Link to='/login'>Sign-In</Link>
+        Already have an account? <Link to='/login'>Login</Link>
       </p>
     </div>
   );

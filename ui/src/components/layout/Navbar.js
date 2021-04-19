@@ -46,6 +46,9 @@ const Navbar = ({ title, icon }) => {
   const guestLinks = (
     <Fragment>
       <li>
+        <Link to='/register'>Register</Link>
+      </li>
+      <li>
         <Link to='/login'>Sign-In</Link>
       </li>
     </Fragment>
@@ -53,29 +56,32 @@ const Navbar = ({ title, icon }) => {
 
   return (
     <Fragment>
-      <nav>
-        <div className='nav-wrapper'>
-          <Link to='/' className='brand-logo center'>
-            {title}
-          </Link>
-          <a href='#!' data-target='mobile-demo' className='sidenav-trigger'>
-            <i className='material-icons'>menu</i>
-          </a>
-          <ul className='left hide-on-med-and-down'>
-            <li>
-              <Link to='/about'>About</Link>
-            </li>
-          </ul>
-          <ul className='right hide-on-med-and-down'>
-            {isAuthenticated ? authLinks : guestLinks}
-          </ul>
-        </div>
-      </nav>
+      <div className='navbar-fixed'>
+        <nav className='blue darken-4'>
+          <div className='nav-wrapper'>
+            <Link to='/' className='brand-logo center'>
+              {title}
+            </Link>
+            <a href='#!' data-target='mobile-demo' className='sidenav-trigger'>
+              <i className='material-icons'>menu</i>
+            </a>
+            <ul className='left hide-on-med-and-down'>
+              <li>
+                <Link to='/about'>About</Link>
+              </li>
+            </ul>
+            <ul className='right hide-on-med-and-down'>
+              {isAuthenticated ? authLinks : guestLinks}
+            </ul>
+          </div>
+        </nav>
+      </div>
 
       <ul className='sidenav' id='mobile-demo'>
         <li>
           <Link to='/about'>About</Link>
         </li>
+        <li className='divider'></li>
         {isAuthenticated ? authLinks : guestLinks}
       </ul>
     </Fragment>
