@@ -59,11 +59,22 @@ const NewMessage = props => {
   const signMessage = () => {
     console.log('Signing');
     try {
-      var priv = KEYUTIL.getKey(privKey);
-      var sig = new KJUR.crypto.Signature({ alg: 'SHA1withRSA' });
+      var today = new Date();
+      today =
+        today.getUTCDate() +
+        '/' +
+        (today.getUTCMonth() + 1) +
+        '/' +
+        today.getUTCFullYear();
 
+      var priv = KEYUTIL.getKey(privKey);
+      var sig = new KJUR.crypto.Signature({ alg: 'SHA512withECDSA' });
       sig.init(priv);
-      sig.updateString(content);
+
+      // append today's date in the form dd/mm/yyyy
+      var toSign = today + '-' + content;
+      console.log(toSign);
+      sig.updateString(toSign);
 
       var sigHex = sig.sign();
       setSignature(sigHex);
@@ -93,9 +104,15 @@ const NewMessage = props => {
     }
   };
 
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  today = dd + '/' + mm + '/' + yyyy;
+
   return (
     <Fragment>
-      <h1>New Message for {product && product.name}</h1>
+      <h2>New Message for {product && product.name}</h2>
       <h4>Enter the product update below.</h4>
       <br />
       <form onSubmit={onSubmit}>
@@ -121,15 +138,16 @@ const NewMessage = props => {
             className='materialize-textarea'
           />
         </div>
-        <h4>Signature</h4>
-        {signature}
-        <br />
-        <a href='#!' className='btn' onClick={signMessage}>
+        <h4>Signature {new Date().toLocaleDateString()}</h4>
+        <a href='#!' className='btn blue darken-4' onClick={signMessage}>
           Sign the message!
         </a>
         <br />
         <br />
-        <input type='submit' value='Submit' className='btn' />
+        Output: {signature}
+        <br />
+        <br />
+        <input type='submit' value='Submit' className='btn btn-large green' />
       </form>
     </Fragment>
   );

@@ -24,7 +24,7 @@ const Register = props => {
 
   const genKeys = () => {
     // Generate 1024-bit RSA keypair
-    const kp = KEYUTIL.generateKeypair('RSA', 512);
+    const kp = KEYUTIL.generateKeypair('EC', 'secp256r1');
 
     // Separate Private and Public Keys
     var prvKey = kp.prvKeyObj;

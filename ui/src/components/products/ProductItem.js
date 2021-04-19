@@ -18,7 +18,7 @@ const ProductItem = ({ product }) => {
             />
           </div>
           <div className='card-content'>
-            <h3>{name}</h3>
+            <h4>{name}</h4>
             <h5>{code.toUpperCase()}</h5>
             <p className='truncate'>{description} </p>
             <p>

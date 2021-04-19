@@ -137,10 +137,20 @@ router.post(
       }
 
       // signature verification
+      var today = new Date();
+      today =
+        today.getUTCDate() +
+        '/' +
+        (today.getUTCMonth() + 1) +
+        '/' +
+        today.getUTCFullYear();
+
       var pub = KEYUTIL.getKey(public_key);
-      var sig = new KJUR.crypto.Signature({ alg: 'SHA1withRSA' });
+      var sig = new KJUR.crypto.Signature({ alg: 'SHA512withECDSA' });
       sig.init(pub);
-      sig.updateString(content);
+      var toVerify = today + '-' + content;
+      console.log(toVerify);
+      sig.updateString(toVerify);
       var isValid = sig.verify(signature); // signature validity
 
       if (!isValid) {
@@ -204,10 +214,18 @@ router.get('/signatures/:id', auth, async (req, res) => {
     const pk = message.signer.public_key.replace(new RegExp('\r\n', 'g'), '');
 
     // signature verification
+    var date = new Date(message.date);
+    date =
+      date.getUTCDate() +
+      '/' +
+      (date.getUTCMonth() + 1) +
+      '/' +
+      date.getUTCFullYear();
+
     var pub = KEYUTIL.getKey(pk);
-    var sig = new KJUR.crypto.Signature({ alg: 'SHA1withRSA' });
+    var sig = new KJUR.crypto.Signature({ alg: 'SHA512withECDSA' });
     sig.init(pub);
-    sig.updateString(message.content);
+    sig.updateString(date + '-' + message.content);
     var isValid = sig.verify(signature); // signature validity
 
     res.json({ signature, isValid });
