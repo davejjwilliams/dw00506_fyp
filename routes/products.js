@@ -23,19 +23,14 @@ router.get('/', auth, async (req, res) => {
     const user = await User.findById(req.user.id);
 
     if (user.role === 'customer') {
-      console.log('Get Products Route - Customer Branch');
-      const test = user.products;
-
-      const testProducts = await Product.find({
-        _id: { $in: test }
+      const productList = user.products;
+      const customerProducts = await Product.find({
+        _id: { $in: productList }
       });
-
-      products = testProducts;
+      products = customerProducts;
     } else if (user.role === 'seller') {
-      console.log('Get Products Route - Seller Branch');
       products = await Product.find({ seller: req.user.id });
     } else if (user.role === 'manufacturer') {
-      console.log('Get Products Route - Manufacturer Branch');
       products = await Product.find({
         $or: [{ manufacturers: { $elemMatch: { email: user.email } } }]
       });
@@ -149,7 +144,6 @@ router.post(
       var sig = new KJUR.crypto.Signature({ alg: 'SHA512withECDSA' });
       sig.init(pub);
       var toVerify = today + '-' + content;
-      console.log(toVerify);
       sig.updateString(toVerify);
       var isValid = sig.verify(signature); // signature validity
 
@@ -225,10 +219,12 @@ router.get('/signatures/:id', auth, async (req, res) => {
     var pub = KEYUTIL.getKey(pk);
     var sig = new KJUR.crypto.Signature({ alg: 'SHA512withECDSA' });
     sig.init(pub);
-    sig.updateString(date + '-' + message.content);
+
+    var verifiedMessage = date + '-' + message.content;
+    sig.updateString(verifiedMessage);
     var isValid = sig.verify(signature); // signature validity
 
-    res.json({ signature, isValid });
+    res.json({ verifiedMessage, signature, isValid });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ msg: 'Server Error' });

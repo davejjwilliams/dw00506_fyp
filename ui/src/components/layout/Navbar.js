@@ -23,7 +23,7 @@ const Navbar = ({ title, icon }) => {
   const authLinks = (
     <Fragment>
       <li>
-        <Link to='/'>Welcome, {user && user.name + ' | ' + user.role}</Link>
+        <Link to='/'>Welcome, {user && user.name}</Link>
       </li>
       {user && user.role === 'customer' && (
         <li>

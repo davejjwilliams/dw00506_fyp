@@ -57,7 +57,6 @@ const NewMessage = props => {
   const { content, privKey } = messageFields;
 
   const signMessage = () => {
-    console.log('Signing');
     try {
       var today = new Date();
       today =
@@ -73,7 +72,6 @@ const NewMessage = props => {
 
       // append today's date in the form dd/mm/yyyy
       var toSign = today + '-' + content;
-      console.log(toSign);
       sig.updateString(toSign);
 
       var sigHex = sig.sign();
@@ -138,13 +136,13 @@ const NewMessage = props => {
             className='materialize-textarea'
           />
         </div>
-        <h4>Signature {new Date().toLocaleDateString()}</h4>
+        <h4>Signature</h4>
         <a href='#!' className='btn blue darken-4' onClick={signMessage}>
           Sign the message!
         </a>
         <br />
         <br />
-        Output: {signature}
+        <p style={{ overflowWrap: 'break-word' }}>Output: {signature}</p>
         <br />
         <br />
         <input type='submit' value='Submit' className='btn btn-large green' />

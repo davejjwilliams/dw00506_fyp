@@ -57,7 +57,7 @@ const Code = props => {
 
   return (
     <Fragment>
-      <h1>Code</h1>
+      <h2>Code</h2>
       <h4>Enter the code you received to receive updates for your products.</h4>
       <br />
       <form onSubmit={onSubmit}>

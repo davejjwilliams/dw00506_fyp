@@ -55,7 +55,7 @@ const NewProduct = props => {
 
   return (
     <div>
-      <h1>Add New Product</h1>
+      <h2>Add New Product</h2>
       <form onSubmit={onSubmit}>
         <div className='input-field'>
           <label className='active' htmlFor='name'>

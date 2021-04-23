@@ -41,8 +41,8 @@ const Login = props => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className='form-padding'>
+      <h2>Login</h2>
       <form onSubmit={onSubmit}>
         <div className='input-field'>
           <label className='active' htmlFor='email'>

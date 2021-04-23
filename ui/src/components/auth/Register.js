@@ -76,8 +76,8 @@ const Register = props => {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
+    <div className='form-padding'>
+      <h2>Register</h2>
       <form onSubmit={onSubmit}>
         <div className='input-field'>
           <label className='active' htmlFor='name'>
@@ -137,8 +137,7 @@ const Register = props => {
         <br />
         <div className='input-field'>
           <label className='active' htmlFor='password'>
-            Password (at least 8 characters, must contain one uppercase, one
-            lower case and one number)
+            Password
           </label>
           <input
             type='password'
@@ -146,6 +145,10 @@ const Register = props => {
             value={password}
             onChange={onChange}
           />
+          <span class='helper-text' data-error='wrong' data-success='right'>
+            (at least 8 characters, must contain one uppercase, one lower case
+            and one number)
+          </span>
         </div>
         <div className='input-field'>
           <label className='active' htmlFor='password2'>
