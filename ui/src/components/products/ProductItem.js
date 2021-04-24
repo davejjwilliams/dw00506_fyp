@@ -9,7 +9,7 @@ const ProductItem = ({ product }) => {
     <Link to={`/product/${_id}`} style={{ color: 'black' }}>
       <div className='col s12 m6 l4'>
         <div className='col-content card hoverable'>
-          <div class='card-image'>
+          <div className='card-image'>
             <img
               src={image_url}
               alt={name}
@@ -21,8 +21,8 @@ const ProductItem = ({ product }) => {
             <h4>{name}</h4>
             <h5>{code.toUpperCase()}</h5>
             <p className='truncate'>{description} </p>
-            <p>
-              <Link to={`/product/${_id}`}>View Updates</Link>
+            <p style={{ color: 'blue', textDecoration: 'underline' }}>
+              View Updates
             </p>
           </div>
         </div>

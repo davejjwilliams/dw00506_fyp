@@ -16,11 +16,15 @@ const Product = ({ match }) => {
     loadUser();
     getProduct(match.params.id);
     getProductMessages(match.params.id);
+    // eslint-disable-next-line
   }, []);
 
   return (
     <div>
       <br />
+      <Link to='/' className='btn btn-small blue darken-4'>
+        <i className='material-icons'>arrow_back</i>
+      </Link>
       <div className='row'>
         <div className='col s12 m6 card'>
           <img

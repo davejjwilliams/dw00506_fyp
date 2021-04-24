@@ -18,6 +18,7 @@ const Login = props => {
       M.toast({ html: 'Incorrect Login Details' });
       clearErrors();
     }
+    // eslint-disable-next-line
   }, [error, isAuthenticated, props.history]);
 
   const [user, setUser] = useState({

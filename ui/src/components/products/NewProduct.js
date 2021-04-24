@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import ProductContext from '../../context/product/productContext';
 import AuthContext from '../../context/auth/authContext';
 
@@ -9,6 +10,7 @@ const NewProduct = props => {
 
   useEffect(() => {
     authContext.loadUser();
+    // eslint-disable-next-line
   }, []);
 
   const productContext = useContext(ProductContext);
@@ -29,6 +31,7 @@ const NewProduct = props => {
       M.toast({ html: 'You must be a seller to create a product.' });
       clearProductErrors();
     }
+    // eslint-disable-next-line
   }, [error, formSuccess]);
 
   const [product, setProduct] = useState({
@@ -55,6 +58,10 @@ const NewProduct = props => {
 
   return (
     <div>
+      <br />
+      <Link to='/' className='btn btn-small blue darken-4'>
+        <i className='material-icons'>arrow_back</i>
+      </Link>
       <h2>Add New Product</h2>
       <form onSubmit={onSubmit}>
         <div className='input-field'>

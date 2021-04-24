@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+
+import M from 'materialize-css/dist/js/materialize.min.js';
 
 const MessageItem = ({ message }) => {
   const { content, sig_number, signer, date } = message;
@@ -24,12 +26,16 @@ const MessageItem = ({ message }) => {
   };
 
   const verify = async () => {
-    const res = await axios.get(`/api/products/signatures/${sig_number}`);
-    setVerification({
-      verifiedMessage: res.data.verifiedMessage,
-      valid: res.data.isValid,
-      fetchedSignature: res.data.signature
-    });
+    try {
+      const res = await axios.get(`/api/products/signatures/${sig_number}`);
+      setVerification({
+        verifiedMessage: res.data.verifiedMessage,
+        valid: res.data.isValid,
+        fetchedSignature: res.data.signature
+      });
+    } catch (err) {
+      M.toast({ html: 'Error verifying signature!' });
+    }
   };
 
   return (
@@ -56,9 +62,12 @@ const MessageItem = ({ message }) => {
         </p>
 
         {verifiedMessage !== '' && (
-          <p style={{ overflowWrap: 'break-word' }}>
-            Verified Message: {verifiedMessage}
-          </p>
+          <Fragment>
+            <div className='divider'></div>
+            <p style={{ overflowWrap: 'break-word' }}>
+              Verified Message: "{verifiedMessage}"
+            </p>
+          </Fragment>
         )}
 
         {fetchedSignature !== '' && (

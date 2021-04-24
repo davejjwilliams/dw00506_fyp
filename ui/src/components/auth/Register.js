@@ -53,6 +53,7 @@ const Register = props => {
       M.toast({ html: 'User with this email already exists.' });
       clearErrors();
     }
+    // eslint-disable-next-line
   }, [error, isAuthenticated, props.history]);
 
   const onChange = e => {
@@ -145,7 +146,7 @@ const Register = props => {
             value={password}
             onChange={onChange}
           />
-          <span class='helper-text' data-error='wrong' data-success='right'>
+          <span className='helper-text' data-error='wrong' data-success='right'>
             (at least 8 characters, must contain one uppercase, one lower case
             and one number)
           </span>

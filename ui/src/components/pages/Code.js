@@ -1,14 +1,15 @@
 import React, { Fragment, useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 import ProductContext from '../../context/product/productContext';
 
 import M from 'materialize-css/dist/js/materialize.min.js';
-import { RESET_FORM_SUCCESS } from '../../context/types';
 
 const Code = props => {
   const { loadUser } = useContext(AuthContext);
   useEffect(() => {
     loadUser();
+    // eslint-disable-next-line
   }, []);
 
   const productContext = useContext(ProductContext);
@@ -37,6 +38,7 @@ const Code = props => {
       M.toast({ html: 'There is no product associated with this code!' });
       clearProductErrors();
     }
+    // eslint-disable-next-line
   }, [error, formSuccess]);
 
   const [code, setCode] = useState('');
@@ -57,8 +59,12 @@ const Code = props => {
 
   return (
     <Fragment>
+      <br />
+      <Link to='/' className='btn btn-small blue darken-4'>
+        <i className='material-icons'>arrow_back</i>
+      </Link>
       <h2>Code</h2>
-      <h4>Enter the code you received to receive updates for your products.</h4>
+      <h4>Enter the code you received to follow updates for your products.</h4>
       <br />
       <form onSubmit={onSubmit}>
         <div className='input-field'>

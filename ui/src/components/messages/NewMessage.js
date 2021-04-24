@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import AuthContext from '../../context/auth/authContext';
 import ProductContext from '../../context/product/productContext';
 import { KEYUTIL, KJUR } from 'jsrsasign';
@@ -23,6 +24,7 @@ const NewMessage = props => {
   useEffect(() => {
     loadUser();
     getProduct(props.match.params.id);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -45,6 +47,7 @@ const NewMessage = props => {
       M.toast({ html: 'The signature is not valid.' });
       clearProductErrors();
     }
+    // eslint-disable-next-line
   }, [formSuccess, error]);
 
   const [messageFields, setMessageFields] = useState({
@@ -110,6 +113,13 @@ const NewMessage = props => {
 
   return (
     <Fragment>
+      <br />
+      <Link
+        to={`/product/${props.match.params.id}`}
+        className='btn btn-small blue darken-4'
+      >
+        <i className='material-icons'>arrow_back</i>
+      </Link>
       <h2>New Message for {product && product.name}</h2>
       <h4>Enter the product update below.</h4>
       <br />
