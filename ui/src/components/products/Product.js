@@ -48,8 +48,11 @@ const Product = ({ match }) => {
       <div className='center'>
         <h3>Updates</h3>
         {user && user.role !== 'customer' && (
-          <Link to={`/product/${match.params.id}/newmessage`} className='btn'>
-            Add Message
+          <Link
+            to={`/product/${match.params.id}/newmessage`}
+            className='btn blue darken-4'
+          >
+            Post Update
           </Link>
         )}
       </div>

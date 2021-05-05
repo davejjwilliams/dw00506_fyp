@@ -51,7 +51,7 @@ const MessageItem = ({ message }) => {
         </div>
       </div>
       <div className='collapsible-body'>
-        <button onClick={verify} className='btn'>
+        <button onClick={verify} className='btn green'>
           Verify Signature
         </button>
         <p style={{ overflowWrap: 'break-word' }}>

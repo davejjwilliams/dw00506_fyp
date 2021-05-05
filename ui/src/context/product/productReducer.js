@@ -33,7 +33,7 @@ const productReducer = (state, action) => {
     case ADD_MESSAGE:
       return {
         ...state,
-        messages: [action.payload, ...state.messages],
+        // messages: [action.payload, ...state.messages],
         formSuccess: true
       };
     case ADD_PRODUCT:

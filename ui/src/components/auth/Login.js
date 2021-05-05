@@ -62,7 +62,11 @@ const Login = props => {
             onChange={onChange}
           />
         </div>
-        <input type='submit' value='Submit' className='btn' />
+        <input
+          type='submit'
+          value='Login'
+          className='btn btn-large blue darken-4'
+        />
       </form>
       <p>
         Don't have an account? <Link to='/register'>Register Here</Link>

@@ -151,6 +151,8 @@ router.post(
         return res.status(400).json({ msg: 'Signature is not valid.' });
       }
 
+      res.json(true);
+
       var web3js = new web3(
         new web3.providers.HttpProvider('HTTP://127.0.0.1:7545')
       );
@@ -166,7 +168,6 @@ router.post(
         .createSignature(signature)
         .send({ from: accounts[0], gas: 3000000 });
 
-      // To be added to Message Object
       const sigCount = await messageSignatures.methods.sigCount().call();
 
       const newMessage = new Message({
@@ -178,7 +179,7 @@ router.post(
       });
 
       const message = await newMessage.save();
-      res.json(message);
+      // res.json(message);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -200,11 +201,11 @@ router.get('/signatures/:id', auth, async (req, res) => {
     var contractAddress = config.get('contractAddress');
     const messageSignatures = new web3js.eth.Contract(abi.abi, contractAddress);
 
-    const latestSignature = await messageSignatures.methods
+    const fetchedData = await messageSignatures.methods
       .signatures(req.params.id)
       .call();
 
-    const signature = latestSignature.content;
+    const signature = fetchedData.content;
     const pk = message.signer.public_key.replace(new RegExp('\r\n', 'g'), '');
 
     // signature verification
@@ -288,20 +289,6 @@ router.post(
     }
   }
 );
-
-// @route   PUT api/products
-// @desc    Update product
-// @access  Private
-router.put('/:id', (req, res) => {
-  res.send('Update product');
-});
-
-// @route   DELETE api/products
-// @desc    Delete product
-// @access  Private
-router.delete('/:id', (req, res) => {
-  res.send('Delete product');
-});
 
 // @route   POST api/products/code
 // @desc    Submit product code

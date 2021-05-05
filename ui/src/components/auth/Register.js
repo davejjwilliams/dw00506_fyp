@@ -64,13 +64,8 @@ const Register = props => {
     e.preventDefault();
     if (name === '' || email === '' || password === '') {
       M.toast({ html: 'Please enter all fields' });
-    } else if (!password.match('(?=.*d)(?=.*[a-z])(?=.*[A-Z]).{8,}')) {
-      M.toast({
-        html:
-          'Password must be at least 8 characters, containing one uppercase, one lowercase and one number.'
-      });
     } else if (password !== password2) {
-      M.toast({ html: 'Passwords do not match' });
+      M.toast({ html: 'Passwords do not match.' });
     } else {
       register({ name, email, role, pubKey, password });
     }
@@ -126,11 +121,11 @@ const Register = props => {
           <Fragment>
             <br />
             <br />
-            <h2 className='red-text'>Save the two following keys:</h2>
-            <h4>Public Key:</h4>
+            <h3 className='red-text'>Save the two following keys:</h3>
+            <h5>Public Key:</h5>
             {pubKey}
             <br />
-            <h4>Private Key:</h4>
+            <h5>Private Key:</h5>
             {privKey}
           </Fragment>
         )}
@@ -145,10 +140,10 @@ const Register = props => {
             name='password'
             value={password}
             onChange={onChange}
+            minLength={8}
           />
           <span className='helper-text' data-error='wrong' data-success='right'>
-            (at least 8 characters, must contain one uppercase, one lower case
-            and one number)
+            (at least 8 characters)
           </span>
         </div>
         <div className='input-field'>
@@ -162,7 +157,11 @@ const Register = props => {
             onChange={onChange}
           />
         </div>
-        <input type='submit' value='Submit' className='btn' />
+        <input
+          type='submit'
+          value='Register'
+          className='btn btn-large blue darken-4'
+        />
       </form>
       <p>
         Already have an account? <Link to='/login'>Login</Link>

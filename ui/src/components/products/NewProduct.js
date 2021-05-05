@@ -68,13 +68,7 @@ const NewProduct = props => {
           <label className='active' htmlFor='name'>
             Name
           </label>
-          <input
-            type='text'
-            name='name'
-            value={name}
-            onChange={onChange}
-            required
-          />
+          <input type='text' name='name' value={name} onChange={onChange} />
         </div>
         <div className='input-field'>
           <label className='active' htmlFor='description'>
@@ -85,7 +79,6 @@ const NewProduct = props => {
             name='description'
             value={description}
             onChange={onChange}
-            required
           />
         </div>
         <div className='input-field'>
@@ -97,12 +90,11 @@ const NewProduct = props => {
             name='image_url'
             value={image_url}
             onChange={onChange}
-            required
           />
         </div>
         <div className='input-field'>
           <label className='active' htmlFor='manufacturer_emails'>
-            Manufacturers - Enter the emails of all manufacturers working on
+            Manufacturers - Enter the emails of any manufacturers working on
             this project, separated by commas.
           </label>
           <input
@@ -112,7 +104,11 @@ const NewProduct = props => {
             onChange={onChange}
           />
         </div>
-        <input type='submit' value='Submit Product' className='btn' />
+        <input
+          type='submit'
+          value='Submit Product'
+          className='btn btn-large green'
+        />
       </form>
     </div>
   );

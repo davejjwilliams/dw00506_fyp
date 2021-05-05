@@ -56,6 +56,7 @@ const NewMessage = props => {
   });
 
   const [signature, setSignature] = useState('');
+  const [signedMessage, setSignedMessage] = useState('');
 
   const { content, privKey } = messageFields;
 
@@ -79,6 +80,7 @@ const NewMessage = props => {
 
       var sigHex = sig.sign();
       setSignature(sigHex);
+      setSignedMessage(toSign);
     } catch (err) {
       M.toast({
         html:
@@ -96,6 +98,7 @@ const NewMessage = props => {
     if (content === '' || privKey === '' || signature === '') {
       M.toast({ html: 'Please fill in all fields and sign your message.' });
     } else {
+      // props.history.push(`/product/${props.match.params.id}`);
       submitMessage({
         product_id: product._id,
         content,
@@ -120,7 +123,7 @@ const NewMessage = props => {
       >
         <i className='material-icons'>arrow_back</i>
       </Link>
-      <h2>New Message for {product && product.name}</h2>
+      <h2>New Update for {product && product.name}</h2>
       <h4>Enter the product update below.</h4>
       <br />
       <form onSubmit={onSubmit}>
@@ -148,14 +151,25 @@ const NewMessage = props => {
         </div>
         <h4>Signature</h4>
         <a href='#!' className='btn blue darken-4' onClick={signMessage}>
-          Sign the message!
+          Sign Message
         </a>
-        <br />
-        <br />
-        <p style={{ overflowWrap: 'break-word' }}>Output: {signature}</p>
-        <br />
-        <br />
-        <input type='submit' value='Submit' className='btn btn-large green' />
+        {signature !== '' && (
+          <Fragment>
+            <br />
+            <br />
+            <p style={{ overflowWrap: 'break-word' }}>
+              Signed Content: "{signedMessage}"
+            </p>
+            <p style={{ overflowWrap: 'break-word' }}>
+              Signed Output: {signature}
+            </p>
+            <input
+              type='submit'
+              value='Submit'
+              className='btn btn-large green'
+            />
+          </Fragment>
+        )}
       </form>
     </Fragment>
   );

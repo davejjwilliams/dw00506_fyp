@@ -73,7 +73,7 @@ const Code = props => {
           </label>
           <input type='text' name='code' value={code} onChange={onChange} />
         </div>
-        <input type='submit' value='Submit' className='btn' />
+        <input type='submit' value='Submit' className='btn btn-large green' />
       </form>
     </Fragment>
   );

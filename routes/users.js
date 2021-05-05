@@ -15,6 +15,7 @@ router.post(
   [
     check('name', 'Please enter a name.').not().isEmpty(),
     check('email', 'Please use valid email.').isEmail(),
+    check('role').isIn(['customer', 'seller', 'manufacturer']),
     check(
       'password',
       'Please enter a password with 8 or more characters.'

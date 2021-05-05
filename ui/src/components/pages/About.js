@@ -10,8 +10,8 @@ const About = () => {
           <div className='card'>
             <div className='card-content'>
               <h5>
-                Welcome to Manutrackture, the easiest place to keep up with your
-                the manufacturing of your ordered items.
+                Welcome to Manutrackture, the easiest place to keep up with the
+                manufacturing of your ordered items.
               </h5>
             </div>
           </div>
