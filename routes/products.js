@@ -163,23 +163,22 @@ router.post(
         contractAddress
       );
 
+      const sigId = Math.floor(Math.random() * 999999);
+
       const accounts = await web3js.eth.getAccounts();
       await messageSignatures.methods
-        .createSignature(signature)
+        .createSignature(signature, sigId)
         .send({ from: accounts[0], gas: 3000000 });
-
-      const sigCount = await messageSignatures.methods.sigCount().call();
 
       const newMessage = new Message({
         product: product_id,
         content,
-        sig_number: sigCount,
+        sig_number: sigId,
         signature,
         signer
       });
 
-      const message = await newMessage.save();
-      // res.json(message);
+      await newMessage.save();
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
