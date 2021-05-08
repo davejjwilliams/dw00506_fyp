@@ -63,6 +63,9 @@ router.get('/:id', auth, async (req, res) => {
 // @access  Private
 router.get('/:id/messages', auth, async (req, res) => {
   try {
+    let product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ msg: 'Product not found' });
+
     let messages = await Message.find({ product: req.params.id }).sort({
       date: -1
     });
@@ -192,6 +195,7 @@ router.post(
 router.get('/signatures/:id', auth, async (req, res) => {
   try {
     const message = await Message.findOne({ sig_number: req.params.id });
+    if (!message) return res.status(404).json({ msg: 'Signature not found' });
 
     var web3js = new web3(
       new web3.providers.HttpProvider('HTTP://127.0.0.1:7545')
