@@ -63,53 +63,82 @@ const NewProduct = props => {
         <i className='material-icons'>arrow_back</i>
       </Link>
       <h2>Add New Product</h2>
-      <form onSubmit={onSubmit}>
-        <div className='input-field'>
-          <label className='active' htmlFor='name'>
-            Name
-          </label>
-          <input type='text' name='name' value={name} onChange={onChange} />
+      <div className='row'>
+        <div className='col m6 s12'>
+          <form onSubmit={onSubmit}>
+            <div className='input-field'>
+              <label className='active' htmlFor='name'>
+                Name
+              </label>
+              <input type='text' name='name' value={name} onChange={onChange} />
+            </div>
+            <div className='input-field'>
+              <label className='active' htmlFor='description'>
+                Description
+              </label>
+              <textarea
+                className='materialize-textarea'
+                type='text'
+                name='description'
+                value={description}
+                onChange={onChange}
+              />
+            </div>
+            <div className='input-field'>
+              <label className='active' htmlFor='image_url'>
+                Image URL
+              </label>
+              <input
+                type='text'
+                name='image_url'
+                value={image_url}
+                onChange={onChange}
+              />
+            </div>
+            <div className='input-field'>
+              <label className='active' htmlFor='manufacturer_emails'>
+                Manufacturers
+              </label>
+              <input
+                type='text'
+                name='manufacturer_emails'
+                value={manufacturer_emails}
+                onChange={onChange}
+              />
+              <span className='helper-text'>
+                Enter the emails of any manufacturers working on this project,
+                separated by commas.
+              </span>
+            </div>
+            <input
+              type='submit'
+              value='Submit Product'
+              className='btn btn-large green'
+            />
+          </form>
         </div>
-        <div className='input-field'>
-          <label className='active' htmlFor='description'>
-            Description
-          </label>
-          <input
-            type='text'
-            name='description'
-            value={description}
-            onChange={onChange}
-          />
+        <div className='col s12 m4 push-m1'>
+          <h5 className='center'>Product Card Preview</h5>
+          <div className='col-content card hoverable'>
+            <div className='card-image'>
+              <img
+                src={image_url}
+                alt={name}
+                height='150'
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
+            <div className='card-content'>
+              <h4>{name}</h4>
+              <h5>ABCDEF</h5>
+              <p className='truncate'>{description} </p>
+              <p style={{ color: 'blue', textDecoration: 'underline' }}>
+                View Updates
+              </p>
+            </div>
+          </div>
         </div>
-        <div className='input-field'>
-          <label className='active' htmlFor='image_url'>
-            Image URL
-          </label>
-          <input
-            type='text'
-            name='image_url'
-            value={image_url}
-            onChange={onChange}
-          />
-        </div>
-        <div className='input-field'>
-          <label className='active' htmlFor='manufacturer_emails'>
-            Manufacturers - Enter the emails of any manufacturers working on
-            this project, separated by commas.
-          </label>
-          <input
-            type='text'
-            name='manufacturer_emails'
-            value={manufacturer_emails}
-            onChange={onChange}
-          />
-        </div>
-        <input
-          type='submit'
-          value='Submit Product'
-          className='btn btn-large green'
-        />
-      </form>
+      </div>
     </div>
   );
 };

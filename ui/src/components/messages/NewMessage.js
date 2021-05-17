@@ -83,8 +83,7 @@ const NewMessage = props => {
       setSignedMessage(toSign);
     } catch (err) {
       M.toast({
-        html:
-          'Something went wrong while signing. Please check each field again.'
+        html: 'Something went wrong while signing. Please check each field again.'
       });
     }
   };
@@ -160,9 +159,7 @@ const NewMessage = props => {
             <p style={{ overflowWrap: 'break-word' }}>
               Signed Content: "{signedMessage}"
             </p>
-            <p style={{ overflowWrap: 'break-word' }}>
-              Signed Output: {signature}
-            </p>
+            <p style={{ overflowWrap: 'break-word' }}>Signature: {signature}</p>
             <input
               type='submit'
               value='Submit'

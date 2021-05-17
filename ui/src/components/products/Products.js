@@ -15,7 +15,7 @@ const Products = () => {
   if (products.length === 0) {
     return (
       <Fragment>
-        <h2>There are no products to show.</h2>
+        <h4>There are no products to show.</h4>
       </Fragment>
     );
   }

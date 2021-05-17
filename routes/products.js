@@ -298,8 +298,15 @@ router.post(
 // @access  Private
 router.post(
   '/code',
-  [auth, check('code', 'Code is required.')],
+  [auth, check('code', 'Code is required.').not().isEmpty()],
   async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { code } = req.body;
+
     try {
       const user = await User.findById(req.user.id);
 
@@ -310,7 +317,7 @@ router.post(
       }
 
       const product = await Product.findOne({
-        code: req.body.code.toLowerCase()
+        code: code.toLowerCase()
       });
 
       if (!product) return res.status(404).json({ msg: 'Product not found' });
